@@ -15,7 +15,7 @@ class OrderItem (
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    val order: Order,
+    var order: Order,
 
     val orderPrice: Int,
 

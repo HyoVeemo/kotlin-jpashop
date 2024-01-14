@@ -1,9 +1,6 @@
 package jpabook.jpashop.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
 class Delivery (
@@ -11,5 +8,8 @@ class Delivery (
     @GeneratedValue
     @Column(name="delivery_id")
     val id: Long,
-){
-}
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    var order: Order,
+)

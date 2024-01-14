@@ -21,10 +21,13 @@ class Category(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    val parent: Category? = null,
+    var parent: Category? = null,
 
     @OneToMany(mappedBy = "parent")
-    val child: List<Category> = emptyList()
+    var child: List<Category> = emptyList()
 ) {
-
+    fun addChildCategory(child : Category){
+        this.child += child
+        child.parent = this
+    }
 }
