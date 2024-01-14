@@ -1,16 +1,15 @@
-package jpabook.jpashop
+package jpabook.jpashop.domain
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 
 @Entity
-class Member (
+class Delivery (
     @Id
     @GeneratedValue
-    val id: Long = 0,
-
-    val userName: String
+    @Column(name="delivery_id")
+    val id: Long,
 ){
-
 }
