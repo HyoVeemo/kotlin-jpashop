@@ -3,7 +3,6 @@ package jpabook.jpashop.domain
 import jakarta.persistence.*
 
 @Entity
-
 class Member(
     @Id
     @GeneratedValue
@@ -12,11 +11,8 @@ class Member(
 
     var name: String,
 
-    val address: Address,
+    var address: Address? = null,
 
     @OneToMany(mappedBy = "member")
     var orders: List<Order> = emptyList()
-) {
-
-
-}
+)

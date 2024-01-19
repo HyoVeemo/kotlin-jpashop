@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "orders")
-class Order (
+class Order(
     @Id
     @GeneratedValue
     @Column
@@ -21,18 +21,18 @@ class Order (
     val orderDate: LocalDateTime,
 
     var status: OrderStatus
-){
+) {
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id")
-    var delivery: Delivery?  = null
+    var delivery: Delivery? = null
 
     // 연관관계 메서드
-    fun addOrderItem(orderItem: OrderItem){
+    fun addOrderItem(orderItem: OrderItem) {
         orderItems += orderItem
         orderItem.order = this
     }
 
-    fun setDelivery(delivery: Delivery){
+    fun addDelivery(delivery: Delivery) {
         this.delivery = delivery
         delivery.order = this
     }
