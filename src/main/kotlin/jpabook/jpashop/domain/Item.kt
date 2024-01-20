@@ -9,7 +9,7 @@ abstract class Item(
     @Id
     @GeneratedValue
     @Column(name = "item_id")
-    val id: Long,
+    val id: Long = 0,
 
     val name: String,
 
@@ -36,7 +36,7 @@ abstract class Item(
         if (this.stockQuantity - quantity < 0) {
             throw NotEnoughStockException("need more stock")
         }
-        
+
         this.stockQuantity -= quantity
     }
 
