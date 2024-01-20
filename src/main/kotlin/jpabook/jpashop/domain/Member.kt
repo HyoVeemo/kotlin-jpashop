@@ -12,7 +12,7 @@ class Member(
     var name: String,
 
     var address: Address? = null,
-
+) {
     @OneToMany(mappedBy = "member")
     var orders: List<Order> = emptyList()
-)
+}

@@ -1,6 +1,7 @@
 package jpabook.jpashop
 
 import jakarta.transaction.Transactional
+import jpabook.jpashop.domain.Address
 import jpabook.jpashop.domain.Member
 import jpabook.jpashop.repository.MemberRepository
 import org.assertj.core.api.Assertions
@@ -16,7 +17,7 @@ class MemberRepositoryTest(@Autowired val memberRepository: MemberRepository) {
     @Transactional
     fun testMember() {
         // given
-        val member = Member(name = "memberA")
+        val member = Member(name = "memberA", address = Address("서울", "소월로", "00000"))
 
         // when
         val saveMember = memberRepository.save(member)

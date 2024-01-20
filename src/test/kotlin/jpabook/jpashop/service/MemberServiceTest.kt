@@ -3,16 +3,12 @@ package jpabook.jpashop.service
 import jakarta.persistence.EntityManager
 import jpabook.jpashop.domain.Member
 import jpabook.jpashop.repository.MemberRepository
-import jpabook.jpashop.service.MemberService
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalStateException
 
 
 @SpringBootTest

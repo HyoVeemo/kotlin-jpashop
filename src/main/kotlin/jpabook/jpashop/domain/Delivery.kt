@@ -3,13 +3,18 @@ package jpabook.jpashop.domain
 import jakarta.persistence.*
 
 @Entity
-class Delivery (
+class Delivery(
     @Id
     @GeneratedValue
-    @Column(name="delivery_id")
-    val id: Long,
+    @Column(name = "delivery_id")
+    var id: Long = 0,
 
+    var status: DeliveryStatus = DeliveryStatus.PEINDING,
+
+    var address: Address,
+
+    ) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    var order: Order,
-)
+    var order: Order? = null
+}
