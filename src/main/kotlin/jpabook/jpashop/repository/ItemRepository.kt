@@ -9,7 +9,6 @@ class ItemRepository(
     private val em: EntityManager
 ) {
     fun save(item: Item) {
-        // todo: null 인걸 0으로 채우는게 맞나
         if (item.id == 0L) {
             em.persist(item)
         } else {

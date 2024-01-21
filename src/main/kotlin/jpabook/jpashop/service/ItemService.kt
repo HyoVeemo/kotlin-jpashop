@@ -23,4 +23,11 @@ class ItemService(
     fun findOne(id: Long): Item {
         return itemRepository.findOne(id)
     }
+
+    fun updateItem(id: Long, name: String, price: Int, stockQuantity: Int) {
+        val findItem = itemRepository.findOne(id)
+        findItem.name = name
+        findItem.price = price
+        findItem.stockQuantity = stockQuantity
+    }
 }

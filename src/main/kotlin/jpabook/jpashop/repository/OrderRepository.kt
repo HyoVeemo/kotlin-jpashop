@@ -1,6 +1,7 @@
 package jpabook.jpashop.repository
 
 import jakarta.persistence.EntityManager
+import jakarta.persistence.criteria.*
 import jpabook.jpashop.domain.Order
 import org.springframework.stereotype.Repository
 
@@ -14,5 +15,24 @@ class OrderRepository(private val em: EntityManager) {
         return em.find(Order::class.java, id)
     }
 
-//        fun findAll(orderSearch: OrderSearch): List<Order>{}
+    fun findAll(orderSearch: OrderSearch): List<Order> {
+        val cb: CriteriaBuilder = em.criteriaBuilder
+        val cq: CriteriaQuery<Order> = cb.createQuery(Order::class.java)
+        val o: Root<Order> = cq.from(Order::class.java)
+        val m: Join<Object, Object> = o.join("member", JoinType.INNER)
+
+        val criteria = ArrayList<Predicate>()
+        if (orderSearch.orderStatus != null) {
+            val status = cb.equal(o.get<Order>("status"), orderSearch.orderStatus)
+            criteria.add(status)
+        }
+        if (!orderSearch.memberName.isNullOrBlank()) {
+            val name = cb.like(m.get("name"), "%" + orderSearch.memberName + "%")
+            criteria.add(name)
+        }
+
+
+        cq.where(cb.and(*criteria.toTypedArray()))
+        return em.createQuery(cq).setMaxResults(1000).resultList
+    }
 }

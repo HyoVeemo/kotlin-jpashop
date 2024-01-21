@@ -11,9 +11,9 @@ abstract class Item(
     @Column(name = "item_id")
     val id: Long = 0,
 
-    val name: String,
+    var name: String,
 
-    val price: Int = 0,
+    var price: Int = 0,
 
     var stockQuantity: Int = 0,
 ) {
