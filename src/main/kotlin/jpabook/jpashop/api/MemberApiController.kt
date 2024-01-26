@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotEmpty
 import jpabook.jpashop.domain.Member
 import jpabook.jpashop.service.MemberService
 import lombok.Data
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class MemberApiController(
@@ -27,6 +25,16 @@ class MemberApiController(
         return CreateMemberResponse(id)
     }
 
+    @PutMapping("/api/v2/members/{id}")
+    fun updateMemberV2(
+        @PathVariable("id") id: Long,
+        @RequestBody @Valid request: UpdateMemberRequest
+    ): UpdateMemberResponse {
+        memberService.update(id, request.name)
+        val member = memberService.findOne(id)
+        return UpdateMemberResponse(member.id, member.name)
+    }
+
     @Data
     data class CreateMemberResponse(
         val id: Long
@@ -37,5 +45,17 @@ class MemberApiController(
         @field:NotEmpty
         val name: String
     )
+
+    @Data
+    data class UpdateMemberResponse(
+        val id: Long,
+        val name: String
+    )
+
+    @Data
+    data class UpdateMemberRequest(
+        val name: String
+    )
 }
+
 

@@ -20,6 +20,12 @@ class MemberService(private val memberRepository: MemberRepository) {
         return member.id
     }
 
+    @Transactional
+    fun update(id: Long, name: String) {
+        val member = memberRepository.findOne(id)
+        member.name = name
+    }
+
     // 중복 회원 검증
     private fun validateDuplicateMember(member: Member) {
         val findMembers = memberRepository.findByName(member.name)
@@ -38,5 +44,6 @@ class MemberService(private val memberRepository: MemberRepository) {
     fun findOne(id: Long): Member {
         return memberRepository.findOne(id)
     }
+
 
 }
