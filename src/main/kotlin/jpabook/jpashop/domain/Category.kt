@@ -23,10 +23,10 @@ class Category(
     @JoinColumn(name = "parent_id")
     var parent: Category? = null,
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = [CascadeType.ALL])
     var child: List<Category> = emptyList()
 ) {
-    fun addChildCategory(child : Category){
+    fun addChildCategory(child: Category) {
         this.child += child
         child.parent = this
     }

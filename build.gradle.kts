@@ -33,6 +33,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-devtools")
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1")
 //    implementation("javax.validation:validation-api:2.0.1.Final")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate6")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     compileOnly("org.projectlombok:lombok")
