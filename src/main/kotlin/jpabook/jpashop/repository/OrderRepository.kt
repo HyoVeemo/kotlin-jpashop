@@ -35,4 +35,12 @@ class OrderRepository(private val em: EntityManager) {
         cq.where(cb.and(*criteria.toTypedArray()))
         return em.createQuery(cq).setMaxResults(1000).resultList
     }
+
+    fun findAllWithMemberDelivery(): List<Order> {
+        return em.createQuery(
+            "select o from Order o" +
+                    " join fetch o.member m" +
+                    " join fetch o.delivery d", Order::class.java
+        ).resultList
+    }
 }
