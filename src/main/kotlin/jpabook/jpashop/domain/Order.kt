@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -11,13 +12,16 @@ class Order private constructor(
     @Column
     val id: Long = 0,
 
+    @field:JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     var member: Member,
 
+    @field:JsonIgnore
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
     var orderItems: List<OrderItem> = emptyList(),
 
+    @field:JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id")
     var delivery: Delivery,
