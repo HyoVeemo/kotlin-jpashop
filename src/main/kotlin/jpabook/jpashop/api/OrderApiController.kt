@@ -4,6 +4,7 @@ import jpabook.jpashop.domain.Order
 import jpabook.jpashop.domain.OrderItem
 import jpabook.jpashop.repository.OrderRepository
 import jpabook.jpashop.repository.OrderSearch
+import jpabook.jpashop.repository.order.query.OrderItemQueryDto
 import jpabook.jpashop.repository.order.query.OrderQueryDto
 import jpabook.jpashop.repository.order.query.OrderQueryRepository
 import org.springframework.web.bind.annotation.GetMapping
@@ -65,6 +66,25 @@ class OrderApiController(
     @GetMapping("/api/v5/orders")
     fun ordersV5(): List<OrderQueryDto> {
         return orderQueryRepository.findAllByDto_optimization()
+    }
+
+    @GetMapping("/api/v6/orders")
+    fun ordersV6(): List<OrderQueryDto> {
+        val flats = orderQueryRepository.findAllByDto_flat()
+        return flats.groupBy { OrderQueryDto(it.orderId, it.name, it.orderDate, it.orderStatus, it.address) }
+            .entries.map {
+                OrderQueryDto(
+                    it.key.orderId,
+                    it.key.name,
+                    it.key.orderDate,
+                    it.key.orderStatus,
+                    it.key.address,
+                    it.value.map { f ->
+                        OrderItemQueryDto(it.key.orderId, f.name, f.orderPrice, f.count)
+                    }
+                )
+            }
+
     }
 
     companion object {

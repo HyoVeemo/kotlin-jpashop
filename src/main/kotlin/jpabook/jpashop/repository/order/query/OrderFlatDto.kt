@@ -5,13 +5,15 @@ import jpabook.jpashop.domain.OrderStatus
 import lombok.Data
 import java.time.LocalDateTime
 
+
 @Data
-class OrderQueryDto(
+data class OrderFlatDto(
     val orderId: Long,
     val name: String,
     val orderDate: LocalDateTime,
     val orderStatus: OrderStatus,
     val address: Address,
-    var orderItems: List<OrderItemQueryDto> = listOf()
-) {
-}
+    val itemName: String,
+    val orderPrice: Int,
+    val count: Int
+)
