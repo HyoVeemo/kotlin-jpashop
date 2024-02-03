@@ -43,4 +43,16 @@ class OrderRepository(private val em: EntityManager) {
                     " join fetch o.delivery d", Order::class.java
         ).resultList
     }
+
+    fun findWithItem(): List<Order> {
+        return em.createQuery(
+            "select distinct o from Order o" +
+                    " join fetch o.member m" +
+                    " join fetch o.delivery d" +
+                    " join fetch o.orderItems oi" +
+                    " join fetch oi.item i", Order::class.java
+        ).setFirstResult(1)
+            .setMaxResults(100)
+            .resultList
+    }
 }

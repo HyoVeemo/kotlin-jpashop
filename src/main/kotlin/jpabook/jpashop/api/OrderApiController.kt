@@ -34,6 +34,14 @@ class OrderApiController(
         }
     }
 
+    @GetMapping("/api/v3/orders")
+    fun ordersV3(): List<OrderDto> {
+        val orders = orderRepository.findWithItem()
+        return orders.map {
+            OrderDto(it)
+        }
+    }
+
     companion object {
         class OrderDto(o: Order) {
             val orderItems = o.orderItems // proxy 를 초기화 안했는데 item 이 다 표시되는 이유는..?
