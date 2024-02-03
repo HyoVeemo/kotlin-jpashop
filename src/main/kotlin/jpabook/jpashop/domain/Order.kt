@@ -2,6 +2,7 @@ package jpabook.jpashop.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import org.hibernate.annotations.BatchSize
 import java.time.LocalDateTime
 
 @Entity
@@ -18,6 +19,7 @@ class Order private constructor(
     var member: Member,
 
     @field:JsonIgnore
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
     var orderItems: List<OrderItem> = emptyList(),
 
