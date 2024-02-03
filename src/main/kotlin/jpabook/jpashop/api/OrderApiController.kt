@@ -62,6 +62,10 @@ class OrderApiController(
         return orderQueryRepository.findOrderQueryDtos()
     }
 
+    @GetMapping("/api/v5/orders")
+    fun ordersV5(): List<OrderQueryDto> {
+        return orderQueryRepository.findAllByDto_optimization()
+    }
 
     companion object {
 

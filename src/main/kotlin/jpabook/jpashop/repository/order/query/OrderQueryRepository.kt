@@ -38,5 +38,31 @@ class OrderQueryRepository(
         ).resultList
     }
 
+    fun findAllByDto_optimization(): List<OrderQueryDto> {
+        val orders = findOrders()
+        val orderIds = toOrderIds(orders)
+        val collect: Map<Long, List<OrderItemQueryDto>> = findOrderItemMap(orderIds)
+        orders.forEach {
+            it.orderItems = collect.get(it.orderId)!!
+        }
+        return orders
+    }
+
+    private fun findOrderItemMap(orderIds: List<Long>): Map<Long, List<OrderItemQueryDto>> {
+        val orderItems = em.createQuery(
+            "select new jpabook.jpashop.repository.order.query.OrderItemQueryDto(oi.order.id, i.name, oi.orderPrice, oi.count) " +
+                    " from OrderItem oi" +
+                    " join oi.item i" +
+                    " where oi.order.id in :orderIds",
+            OrderItemQueryDto::class.java
+        ).setParameter("orderIds", orderIds)
+            .resultList
+
+        return orderItems.groupBy { it.orderId }
+    }
+
+    private fun toOrderIds(orderDtos: List<OrderQueryDto>) =
+        orderDtos.map { it.orderId }
+
 
 }
