@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Bean
 
 @SpringBootApplication
 class JpashopApplication {
+
+
+}
+
+fun main(args: Array<String>) {
     @Bean
     fun hibernate5Module(): Hibernate5JakartaModule {
         return Hibernate5JakartaModule()
     }
-}
-
-fun main(args: Array<String>) {
     runApplication<JpashopApplication>(*args)
 }
