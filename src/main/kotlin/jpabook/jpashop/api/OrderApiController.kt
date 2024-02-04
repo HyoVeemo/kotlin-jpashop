@@ -1,12 +1,13 @@
 package jpabook.jpashop.api
 
 import jpabook.jpashop.domain.Order
-import jpabook.jpashop.domain.OrderItem
 import jpabook.jpashop.repository.OrderRepository
 import jpabook.jpashop.repository.OrderSearch
 import jpabook.jpashop.repository.order.query.OrderItemQueryDto
 import jpabook.jpashop.repository.order.query.OrderQueryDto
 import jpabook.jpashop.repository.order.query.OrderQueryRepository
+import jpabook.jpashop.service.query.OrderDto
+import jpabook.jpashop.service.query.OrderQueryService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class OrderApiController(
     private val orderRepository: OrderRepository,
-    private val orderQueryRepository: OrderQueryRepository
+    private val orderQueryRepository: OrderQueryRepository,
+    private val orderQueryService: OrderQueryService
 ) {
 
     @GetMapping("/api/v1/orders")
@@ -41,10 +43,7 @@ class OrderApiController(
 
     @GetMapping("/api/v3/orders")
     fun ordersV3(): List<OrderDto> {
-        val orders = orderRepository.findWithItem()
-        return orders.map {
-            OrderDto(it)
-        }
+        return orderQueryService.ordersV3()
     }
 
     @GetMapping("/api/v3.1/orders")
@@ -84,24 +83,6 @@ class OrderApiController(
                     }
                 )
             }
-
-    }
-
-    companion object {
-
-        class OrderDto(o: Order) {
-            val orderItems = o.orderItems // proxy 를 초기화 안했는데 item 이 다 표시되는 이유는..?
-            val orderId = o.id
-            val name = o.member.name
-            val orderDate = o.orderDate
-            val address = o.delivery.address
-        }
-
-        class OrderItemDto(oi: OrderItem) {
-            val name = oi.item.name
-            val orderPrice = oi.orderPrice
-            val count = oi.count
-        }
 
     }
 }
