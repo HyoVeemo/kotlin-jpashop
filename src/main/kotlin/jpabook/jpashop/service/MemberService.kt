@@ -2,6 +2,7 @@ package jpabook.jpashop.service
 
 import jpabook.jpashop.domain.Member
 import jpabook.jpashop.repository.MemberRepository
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,7 +23,9 @@ class MemberService(private val memberRepository: MemberRepository) {
 
     @Transactional
     fun update(id: Long, name: String) {
-        val member = memberRepository.findOne(id)
+        val member = memberRepository.findById(id).orElseThrow {
+            throw NotFoundException()
+        }
         member.name = name
     }
 
@@ -42,7 +45,9 @@ class MemberService(private val memberRepository: MemberRepository) {
 
     @Transactional(readOnly = true)
     fun findOne(id: Long): Member {
-        return memberRepository.findOne(id)
+        return memberRepository.findById(id).orElseThrow {
+            throw NotFoundException()
+        }
     }
 
 

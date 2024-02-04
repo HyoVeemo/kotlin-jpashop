@@ -4,7 +4,7 @@ import jpabook.jpashop.domain.Delivery
 import jpabook.jpashop.domain.Order
 import jpabook.jpashop.domain.OrderItem
 import jpabook.jpashop.repository.ItemRepository
-import jpabook.jpashop.repository.MemberRepository
+import jpabook.jpashop.repository.MemberRepositoryOld
 import jpabook.jpashop.repository.OrderRepository
 import jpabook.jpashop.repository.OrderSearch
 import org.springframework.stereotype.Service
@@ -14,14 +14,14 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class OrderService(
     private val orderRepository: OrderRepository,
-    private val memberRepository: MemberRepository,
+    private val memberRepositoryOld: MemberRepositoryOld,
     private val itemRepository: ItemRepository
 ) {
 
     // 주문
     @Transactional
     fun order(memberId: Long, itemId: Long, count: Int): Long {
-        val member = memberRepository.findOne(memberId)
+        val member = memberRepositoryOld.findOne(memberId)
         val item = itemRepository.findOne(itemId)
 
         // 배송정보 생성
