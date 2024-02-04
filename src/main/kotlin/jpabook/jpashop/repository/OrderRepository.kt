@@ -1,12 +1,20 @@
 package jpabook.jpashop.repository
 
+import com.querydsl.core.types.dsl.BooleanExpression
+import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
-import jakarta.persistence.criteria.*
 import jpabook.jpashop.domain.Order
+import jpabook.jpashop.domain.OrderStatus
+import jpabook.jpashop.domain.QMember.member
+import jpabook.jpashop.domain.QOrder.order
 import org.springframework.stereotype.Repository
 
 @Repository
-class OrderRepository(private val em: EntityManager) {
+class OrderRepository(
+    private val em: EntityManager,
+) {
+    private val query: JPAQueryFactory = JPAQueryFactory(em)
+
     fun save(order: Order) {
         em.persist(order)
     }
@@ -15,26 +23,31 @@ class OrderRepository(private val em: EntityManager) {
         return em.find(Order::class.java, id)
     }
 
-    fun findAll(orderSearch: OrderSearch): List<Order> {
-        val cb: CriteriaBuilder = em.criteriaBuilder
-        val cq: CriteriaQuery<Order> = cb.createQuery(Order::class.java)
-        val o: Root<Order> = cq.from(Order::class.java)
-        val m: Join<Object, Object> = o.join("member", JoinType.INNER)
-
-        val criteria = ArrayList<Predicate>()
-        if (orderSearch.orderStatus != null) {
-            val status = cb.equal(o.get<Order>("status"), orderSearch.orderStatus)
-            criteria.add(status)
-        }
-        if (!orderSearch.memberName.isNullOrBlank()) {
-            val name = cb.like(m.get("name"), "%" + orderSearch.memberName + "%")
-            criteria.add(name)
-        }
-
-
-        cq.where(cb.and(*criteria.toTypedArray()))
-        return em.createQuery(cq).setMaxResults(1000).resultList
+    fun findAll2(orderSearch: OrderSearch): List<Order> {
+        return query.select(order)
+            .from(order)
+            .join(order.member, member)
+            .where(statusEq(orderSearch.orderStatus))
+            .limit(1000)
+            .fetch()
     }
+
+
+    fun findAll(orderSearch: OrderSearch): List<Order> {
+        return query.select(order)
+            .from(order)
+            .join(order.member, member)
+            .where(statusEq(orderSearch.orderStatus), nameLike(orderSearch.memberName))
+            .limit(1000)
+            .fetch()
+    }
+
+    private fun nameLike(name: String?): BooleanExpression? =
+        if (name == null) null else member.name.like(name)
+
+    private fun statusEq(statusCond: OrderStatus?) =
+        if (statusCond == null) null else order.status.eq(statusCond)
+
 
     fun findAllWithMemberDelivery(): List<Order> {
         return em.createQuery(
