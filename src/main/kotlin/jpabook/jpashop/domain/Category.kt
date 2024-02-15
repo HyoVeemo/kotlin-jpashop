@@ -23,8 +23,8 @@ class Category(
     @JoinColumn(name = "parent_id")
     var parent: Category? = null,
 
-    @OneToMany(mappedBy = "parent", cascade = [CascadeType.ALL])
-    var child: List<Category> = emptyList()
+    @OneToMany(mappedBy = "parent")
+    val child: MutableList<Category> = mutableListOf()
 ) {
     fun addChildCategory(child: Category) {
         this.child += child
