@@ -1,6 +1,5 @@
 package jpabook.jpashop.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.hibernate.annotations.BatchSize
 import java.time.LocalDateTime
@@ -13,17 +12,14 @@ class Order private constructor(
     @Column(name = "order_id")
     val id: Long = 0,
 
-    @field:JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     var member: Member,
 
-    @field:JsonIgnore
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
     var orderItems: MutableList<OrderItem> = mutableListOf(),
 
-    @field:JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id")
     var delivery: Delivery,

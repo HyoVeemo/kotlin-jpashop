@@ -1,5 +1,6 @@
 package jpabook.jpashop.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -25,6 +26,7 @@ class OrderItem private constructor(
         }
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     var order: Order? = null
