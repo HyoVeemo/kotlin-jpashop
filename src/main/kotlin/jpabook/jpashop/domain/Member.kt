@@ -16,5 +16,5 @@ class Member(
 ) {
     @JsonIgnore
     @OneToMany(mappedBy = "member")
-    var orders: List<Order> = emptyList()
+    var orders: MutableList<Order> = mutableListOf()
 }
