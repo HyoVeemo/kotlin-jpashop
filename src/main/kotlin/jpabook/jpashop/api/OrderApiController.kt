@@ -3,6 +3,7 @@ package jpabook.jpashop.api
 import jpabook.jpashop.domain.Order
 import jpabook.jpashop.domain.OrderItem
 import jpabook.jpashop.repository.OrderRepository
+import jpabook.jpashop.repository.OrderRepositoryImpl
 import jpabook.jpashop.repository.OrderSearch
 import jpabook.jpashop.repository.order.query.OrderItemQueryDto
 import jpabook.jpashop.repository.order.query.OrderQueryDto
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class OrderApiController(
     private val orderRepository: OrderRepository,
-    private val orderQueryRepository: OrderQueryRepository
+    private val orderQueryRepository: OrderQueryRepository,
+    private val orderRepositoryImpl: OrderRepositoryImpl
 ) {
 
     @GetMapping("/api/v1/orders")
     fun ordersV1(): List<Order> {
-        // todo: 프록시 초기화 하면 hibernate5 모듈에서 초기화된 필드를 반환해야 하는데 필드가 없는 문제 있음
-        val all = orderRepository.findAll(OrderSearch())
+        val all = orderRepositoryImpl.findAll()
 //        all.forEach { it ->
 //            it.member.name
 //            it.delivery.address
