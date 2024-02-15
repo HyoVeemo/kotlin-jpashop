@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 class Order private constructor(
     @Id
     @GeneratedValue
-    @Column
+    @Column(name = "order_id")
     val id: Long = 0,
 
     @field:JsonIgnore
@@ -21,7 +21,7 @@ class Order private constructor(
     @field:JsonIgnore
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
-    var orderItems: List<OrderItem> = emptyList(),
+    var orderItems: MutableList<OrderItem> = mutableListOf(),
 
     @field:JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
